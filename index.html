@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BURKINA Info</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
     <style>
         /* Global Styles */
         body {
@@ -720,9 +721,7 @@ video {
             <h1>Bienvenue sur <span class="highlight">BURKINA Info</span></h1>
             <p class="animated-text">Une chaîne de référence au Burkina Faso.</p>
             <div class="video-container">
-                <video  id="videoPlayer" class="video-js" controls preload="auto" preload="auto" data-setup='{}'>
-                    <source src="http://69.64.57.208/burkinainfo/index.m3u8" type="application/x-mpegURL">
-                </video>
+                <video id="player" playsinline controls width="640" height="360"></video>
             </div>                 
         </div>
     </section>
@@ -856,14 +855,31 @@ video {
     </footer>
     <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('player');
+  
         if (Hls.isSupported()) {
-          const video = document.getElementById('video');
           const hls = new Hls();
           hls.loadSource('http://69.64.57.208/burkinainfo/index.m3u8');
           hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play();
+          });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = 'http://69.64.57.208/burkinainfo/index.m3u8';
+          video.addEventListener('loadedmetadata', () => {
+            video.play();
+          });
         }
-      </script>
+  
+        const player = new Plyr(video, {
+          captions: { active: true, update: true, language: 'en' },
+        });
+      });
+    </script>
     <script>
     document.addEventListener("DOMContentLoaded", fetchYouTubeVideos);
     // Variables pour la modal
