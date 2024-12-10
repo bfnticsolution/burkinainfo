@@ -773,7 +773,7 @@ video {
             
             <!-- Conteneur pour Player.js -->
             <div id="player-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: 450px;">
-                <!-- Le lecteur sera intégré ici -->
+                <!-- Le lecteur sera rendu ici -->
             </div>
         </div>
     </section>
@@ -915,37 +915,11 @@ video {
         // Initialisation du lecteur Player.js
         const player = new Playerjs({
             id: "player-container", // ID du conteneur
-            file: "http://69.64.57.208/burkinainfo/index.m3u8", // Lien vers la vidéo ou le flux
-            title: "TV Direct", // Titre de la vidéo
-            poster: "https://example.com/poster.jpg", // Lien vers une image de prévisualisation
-            autoplay: true, // Démarrage automatique
-            controls: true // Affichage des contrôles
+            autoplay: true, // Activer la lecture automatique
+            controls: true, // Activer les contrôles du lecteur
         });
     });
 </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const video = document.getElementById('player');
-  
-        if (Hls.isSupported()) {
-          const hls = new Hls();
-          hls.loadSource('Ressources/flux.m3u8');
-          hls.attachMedia(video);
-          hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.play();
-          });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          video.src = 'Ressources/flux.m3u8';
-          video.addEventListener('loadedmetadata', () => {
-            video.play();
-          });
-        }
-  
-        const player = new Plyr(video, {
-          captions: { active: true, update: true, language: 'en' },
-        });
-      });
-    </script>
    <script>
 function fetchYouTubeVideos() {
     const API_KEY = "AIzaSyAMfno6iYaD5geZUC7Tfmdslz71i7ZDgZM";
