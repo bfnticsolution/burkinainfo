@@ -770,12 +770,13 @@ video {
         <div class="container">
             <h1>Bienvenue sur <span class="highlight">BURKINA Info</span></h1>
             <p class="animated-text">Une chaîne de référence au Burkina Faso.</p>
-            <div class="video-container">
-                <video id="player" playsinline controls width="640" height="360"></video>
-            </div>                 
+            
+            <!-- Conteneur pour Player.js -->
+            <div id="player-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: 450px;">
+                <!-- Le lecteur sera intégré ici -->
+            </div>
         </div>
     </section>
-    
 
     <section id="programs" class="programs">
         <div class="container">
@@ -907,19 +908,34 @@ video {
     <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- Script pour initialiser Player.js -->
+<script src="/js/playerjs.js"></script> <!-- Chemin vers votre fichier Player.js -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialisation du lecteur Player.js
+        const player = new Playerjs({
+            id: "player-container", // ID du conteneur
+            file: "http://69.64.57.208/burkinainfo/index.m3u8", // Lien vers la vidéo ou le flux
+            title: "TV Direct", // Titre de la vidéo
+            poster: "https://example.com/poster.jpg", // Lien vers une image de prévisualisation
+            autoplay: true, // Démarrage automatique
+            controls: true // Affichage des contrôles
+        });
+    });
+</script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const video = document.getElementById('player');
   
         if (Hls.isSupported()) {
           const hls = new Hls();
-          hls.loadSource('http://69.64.57.208/burkinainfo/index.m3u8');
+          hls.loadSource('Ressources/flux.m3u8');
           hls.attachMedia(video);
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
             video.play();
           });
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          video.src = 'http://69.64.57.208/burkinainfo/index.m3u8';
+          video.src = 'Ressources/flux.m3u8';
           video.addEventListener('loadedmetadata', () => {
             video.play();
           });
@@ -930,28 +946,7 @@ video {
         });
       });
     </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", fetchYouTubeVideos);
-    // Variables pour la modal
-    const modal = document.getElementById("videoMBuuodal");
-    const modalContent = document.getElementById("modal-video-container");
-    const closeModal = document.querySelector(".modal .close");
-
-    // Ferme la modal
-    closeModal.addEventListener("click", () => {
-        modal.style.display = "none";
-        modalContent.innerHTML = ""; // Supprime la vidéo de la modal
-    });
-
-    // Ferme la modal si on clique à l'extérieur
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-            modalContent.innerHTML = "";
-        }
-    });
-    
-
+   <script>
 function fetchYouTubeVideos() {
     const API_KEY = "AIzaSyAMfno6iYaD5geZUC7Tfmdslz71i7ZDgZM";
     const CHANNEL_ID = "UCpf_uZB_T3RQT6gKhKMegOw";
